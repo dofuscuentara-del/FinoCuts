@@ -1,11 +1,11 @@
 
 const API = "https://script.google.com/macros/s/AKfycbwkLfh6ZMyuuyAxSQ9swLPbbpZwEMlmI8S6_cuOoOhJxJuDA5DrPCWQyqbBh1tLd5jW/exec";
 
+// ================= TEMA =================
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("themeToggle");
   if (!btn) return;
 
-  // Cargar tema guardado
   const theme = localStorage.getItem("theme");
   if (theme === "light") {
     document.body.classList.add("light");
@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.textContent = isLight ? "☀️" : "🌙";
   });
 });
-
 
 // ================= BARBEROS =================
 async function cargarBarberos(){
@@ -41,13 +40,11 @@ async function cargarBarberos(){
 
 document.addEventListener("DOMContentLoaded", cargarBarberos);
 
-
-
+// ================= HORARIOS =================
 const fechaInput = document.getElementById("fecha");
 const barberoSelect = document.getElementById("barbero");
 const horaSelect = document.getElementById("hora");
 
-/* Cargar horarios cuando cambia fecha o barbero */
 fechaInput.addEventListener("change", cargarHorarios);
 barberoSelect.addEventListener("change", cargarHorarios);
 
@@ -55,12 +52,11 @@ function cargarHorarios() {
   const fecha = fechaInput.value;
   const barbero = barberoSelect.value;
 
-  if (!fecha || !barbero) {
-    horaSelect.innerHTML = "<option>Selecciona fecha y barbero</option>";
-    return;
-  }
+  horaSelect.innerHTML = "<option>Selecciona fecha y barbero</option>";
 
-  fetch(`${API_URL}?action=horariosDisponibles&fecha=${fecha}&barbero=${barbero}`)
+  if (!fecha || !barbero) return;
+
+  fetch(`${API}?action=horariosDisponibles&fecha=${fecha}&barbero=${barbero}`)
     .then(r => r.json())
     .then(data => {
       horaSelect.innerHTML = "";
@@ -78,10 +74,11 @@ function cargarHorarios() {
       });
     })
     .catch(err => {
-      console.error(err);
+      console.error("Error horarios:", err);
       horaSelect.innerHTML = "<option>Error al cargar</option>";
     });
 }
+
 
 
 
