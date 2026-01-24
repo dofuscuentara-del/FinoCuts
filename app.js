@@ -23,6 +23,27 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+// ================= BARBEROS =================
+async function cargarBarberos(){
+  const res = await fetch(`${API}?action=barberos`);
+  const data = await res.json();
+
+  const select = document.getElementById("barbero");
+  select.innerHTML = '<option value="">Selecciona barbero</option>';
+
+  data.forEach(b => {
+    const opt = document.createElement("option");
+    opt.value = b.id;
+    opt.textContent = b.nombre;
+    select.appendChild(opt);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", cargarBarberos);
+
+
+
+
 
 
 
