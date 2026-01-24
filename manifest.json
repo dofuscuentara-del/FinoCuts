@@ -1,0 +1,12 @@
+{
+  "name": "FinoCuts",
+  "short_name": "FinoCuts",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2d8cff",
+  "icons": []
+}
+
+
+

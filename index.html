@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Reservar cita</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="container card">
+
+  <h1>Reservar cita</h1>
+
+  <input id="cliente" placeholder="Nombre">
+  <input id="email" type="email" placeholder="Email">
+  <input id="fecha" type="date">
+
+  <select id="hora"></select>
+
+  <select id="barbero"></select>
+
+  <button onclick="reservar()">Reservar</button>
+
+  <a href="login.html" class="admin-link">Administrador</a>
+
+</div>
+
+<button id="themeToggle" class="theme-toggle">🌙</button>
+
+<script src="app.js"></script>
+</body>
+</html>
+
+
