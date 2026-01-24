@@ -15,11 +15,20 @@
 
   <input id="cliente" placeholder="Nombre">
   <input id="email" type="email" placeholder="Email">
+
   <input id="fecha" type="date">
 
-  <select id="hora"></select>
+  <!-- BARBERO PRIMERO -->
+  <select id="barbero">
+    <option value="">Selecciona barbero</option>
+    <option value="Luis">Luis</option>
+    <option value="Carlos">Carlos</option>
+  </select>
 
-  <select id="barbero"></select>
+  <!-- HORARIO DESPUÉS -->
+  <select id="hora" disabled>
+    <option value="">Selecciona horario</option>
+  </select>
 
   <button onclick="reservar()">Reservar</button>
 
@@ -32,5 +41,7 @@
 <script src="app.js"></script>
 </body>
 </html>
+
+
 
 
