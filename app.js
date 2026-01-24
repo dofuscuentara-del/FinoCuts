@@ -43,6 +43,50 @@ document.addEventListener("DOMContentLoaded", cargarBarberos);
 
 
 
+const fechaInput = document.getElementById("fecha");
+const barberoSelect = document.getElementById("barbero");
+const horaSelect = document.getElementById("hora");
+
+/* Cargar horarios cuando cambia fecha o barbero */
+fechaInput.addEventListener("change", cargarHorarios);
+barberoSelect.addEventListener("change", cargarHorarios);
+
+function cargarHorarios() {
+  const fecha = fechaInput.value;
+  const barbero = barberoSelect.value;
+
+  if (!fecha || !barbero) {
+    horaSelect.innerHTML = "<option>Selecciona fecha y barbero</option>";
+    return;
+  }
+
+  fetch(`${API_URL}?action=horariosDisponibles&fecha=${fecha}&barbero=${barbero}`)
+    .then(r => r.json())
+    .then(data => {
+      horaSelect.innerHTML = "";
+
+      if (data.length === 0) {
+        horaSelect.innerHTML = "<option>No hay horarios</option>";
+        return;
+      }
+
+      data.forEach(h => {
+        const opt = document.createElement("option");
+        opt.value = h;
+        opt.textContent = h;
+        horaSelect.appendChild(opt);
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      horaSelect.innerHTML = "<option>Error al cargar</option>";
+    });
+}
+
+
+
+
+
 
 
 
