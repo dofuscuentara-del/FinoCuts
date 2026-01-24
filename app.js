@@ -81,6 +81,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+function reservar() {
+  const cliente = document.getElementById("cliente").value.trim();
+  const email   = document.getElementById("email").value.trim();
+  const fecha   = document.getElementById("fecha").value;
+  const barbero = document.getElementById("barbero").value;
+  const hora    = document.getElementById("hora").value;
+
+  if (!cliente || !email || !fecha || !barbero || !hora) {
+    alert("Completa todos los campos");
+    return;
+  }
+
+  const url = `${API}?action=reservar`
+    + `&cliente=${encodeURIComponent(cliente)}`
+    + `&email=${encodeURIComponent(email)}`
+    + `&fecha=${fecha}`
+    + `&barbero=${barbero}`
+    + `&hora=${hora}`;
+
+  fetch(url)
+    .then(r => r.json())
+    .then(res => {
+      if (res.ok) {
+        alert("✅ Cita reservada correctamente");
+
+        // limpiar formulario
+        document.getElementById("hora").innerHTML =
+          '<option value="">Selecciona horario</option>';
+      } else {
+        alert("❌ Error al reservar");
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("❌ Error de conexión");
+    });
+}
+
 
 
 
