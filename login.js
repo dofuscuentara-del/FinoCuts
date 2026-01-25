@@ -1,27 +1,34 @@
+
 const API = "https://script.google.com/macros/s/AKfycbwkLfh6ZMyuuyAxSQ9swLPbbpZwEMlmI8S6_cuOoOhJxJuDA5DrPCWQyqbBh1tLd5jW/exec";
 
-async function login(){
+function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  if(!email || !password){
+  console.log("Login:", email, password);
+
+  if (!email || !password) {
     alert("Completa todos los campos");
     return;
   }
 
-  const res = await fetch(
-    `${API}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-  );
+  fetch(`${API}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`)
+    .then(r => r.json())
+    .then(d => {
+      console.log("Respuesta:", d);
 
-  const data = await res.json();
+      if (!d.ok) {
+        alert("Acceso denegado");
+        return;
+      }
 
-  if(!data.ok){
-    alert("Credenciales incorrectas");
-    return;
-  }
-
-  localStorage.setItem("usuario", JSON.stringify(data));
-  window.location.href = "panel.html";
+      localStorage.setItem("session", JSON.stringify(d));
+      window.location.href = "panel.html";
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error de conexión");
+    });
 }
 
 
