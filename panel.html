@@ -1,25 +1,57 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <title>Panel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <script src="push.js"></script>
+<link rel="stylesheet" href="panel.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
 
-<div class="container card">
-<h1>Panel de citas</h1>
-<div id="lista"></div>
-<button onclick="logout()">Salir</button>
+</head>
+
+<body>
+
+<div class="container card panel">
+
+  <div class="panel-header">
+    <h2 id="titulo"></h2>
+    <button class="logout-btn" onclick="logout()">Salir</button>
+  </div>
+
+<div class="filtros">
+  <button onclick="setFiltro('todas')" class="filtro-btn">
+    Todas
+    <span class="badge" id="countTodas">0</span>
+  </button>
+
+  <button onclick="setFiltro('hoy')" class="filtro-btn">
+    Hoy
+    <span class="badge" id="countHoy">0</span>
+  </button>
+
+  <button onclick="setFiltro('mañana')" class="filtro-btn">
+    Mañana
+    <span class="badge" id="countManana">0</span>
+  </button>
 </div>
-<script src="panel.js"></script>
+
+
+
+
+  <div id="listaCitas" class="citas-list"></div>
+
+</div>
 
 <button id="themeToggle" class="theme-toggle">🌙</button>
-<script src="app.js"></script>
 
-
+<script src="panel.js"></script>
+<script src="theme.js"></script>
 </body>
 </html>
+
+
+
+
 
