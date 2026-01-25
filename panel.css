@@ -1,0 +1,247 @@
+
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1e293b, #020617);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 0;
+  color: #f8fafc;
+}
+
+/* =====================
+   CARD GENERAL
+===================== */
+.container.card {
+  width: 95%;
+  max-width: 760px;
+  background: #0f172a;
+  padding: 22px;
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(0,0,0,.6);
+}
+
+/* =====================
+   HEADER PANEL
+===================== */
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* BOTÓN SALIR */
+.logout-btn {
+  width: auto;
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: none;
+  background: #ef4444;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* =====================
+   LISTA CITAS
+===================== */
+.citas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* CARD CITA */
+.cita-card {
+  background: rgba(30, 41, 59, 0.85);
+  border-radius: 18px;
+  padding: 16px 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.25);
+}
+
+/* FECHA */
+.cita-card strong {
+  font-size: 15px;
+}
+
+/* FILAS */
+.cita-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-top: 4px;
+  opacity: .9;
+}
+
+/* ACCIONES */
+.cita-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.cita-actions button {
+  flex: 1;
+  height: 40px;
+  font-size: 14px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* BOTONES */
+.btn-editar {
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+  color: white;
+}
+
+.btn-cancelar {
+  background: linear-gradient(135deg, #f97316, #ef4444);
+  color: white;
+}
+
+/* =====================
+   BOTÓN TEMA
+===================== */
+.theme-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #1e293b;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* =====================
+   MODO CLARO
+===================== */
+body.light {
+  background: radial-gradient(circle at top, #e5e7eb, #f8fafc);
+  color: #0f172a;
+}
+
+body.light .container.card {
+  background: #ffffff;
+  box-shadow: 0 20px 40px rgba(0,0,0,.15);
+}
+
+body.light .cita-card {
+  background: #f8fafc;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+body.light .theme-toggle {
+  background: #e5e7eb;
+  color: #0f172a;
+}
+
+/* =====================
+   FILTROS
+===================== */
+.filtros {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.filtros button {
+  flex: 1;
+  height: 42px;
+  border-radius: 14px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(30, 41, 59, 0.9);
+  color: #cbd5f5;
+  transition: all .2s ease;
+}
+
+/* hover */
+.filtros button:hover {
+  background: rgba(51, 65, 85, 1);
+}
+
+/* activo */
+.filtros button.activo {
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.45);
+}
+
+/* =====================
+   MODO CLARO – FILTROS
+===================== */
+body.light .filtros button {
+  background: #e5e7eb;
+  color: #0f172a;
+}
+
+body.light .filtros button:hover {
+  background: #d1d5db;
+}
+
+body.light .filtros button.activo {
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+  color: #ffffff;
+}
+
+/* =====================
+   FILTROS + BADGES
+===================== */
+.filtros {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.filtro-btn {
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 14px;
+  border: none;
+  background: #1e293b;
+  color: #f8fafc;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filtro-btn.activo {
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+}
+
+/* BADGE */
+.badge {
+  margin-left: 8px;
+  background: #ef4444;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  min-width: 20px;
+  text-align: center;
+}
+
+
