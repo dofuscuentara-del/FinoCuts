@@ -1,3 +1,4 @@
+
 const API = "https://script.google.com/macros/s/AKfycbwkLfh6ZMyuuyAxSQ9swLPbbpZwEMlmI8S6_cuOoOhJxJuDA5DrPCWQyqbBh1tLd5jW/exec";
 
 /* ======================
@@ -43,6 +44,11 @@ function setFiltro(filtro) {
 document.addEventListener("DOMContentLoaded", () => {
   actualizarTitulo();
   cargarCitas();
+
+  if (session.rol === "barbero") {
+    const panel = document.getElementById("horariosPanel");
+    if (panel) panel.style.display = "block";
+  }
 });
 
 /* ======================
@@ -52,7 +58,6 @@ function cargarCitas() {
   fetch(`${API}?action=citas`)
     .then(r => r.json())
     .then(data => {
-
       const contenedor = document.getElementById("listaCitas");
       contenedor.innerHTML = "";
 
@@ -63,11 +68,9 @@ function cargarCitas() {
       let totalHoy = 0;
       let totalManana = 0;
 
-      data.sort((a, b) => {
-        const aKey = `${a[1]} ${a[2]}`;
-        const bKey = `${b[1]} ${b[2]}`;
-        return aKey.localeCompare(bKey);
-      });
+      data.sort((a, b) =>
+        (`${a[1]} ${a[2]}`).localeCompare(`${b[1]} ${b[2]}`)
+      );
 
       data.forEach(c => {
         if (session.rol === "barbero" && Number(c[3]) !== session.barbero_id) return;
@@ -92,20 +95,16 @@ function cargarCitas() {
 
         const card = document.createElement("div");
         card.className = "cita-card";
-
         card.innerHTML = `
-          <div class="cita-row">
-            <strong>${fecha} · ${hora}</strong>
-          </div>
+          <div class="cita-row"><strong>${fecha} · ${hora}</strong></div>
           <div class="cita-row"><span>Cliente</span><span>${c[5]}</span></div>
-          <div class="cita-row"><span>Telefono</span><span>${c[6]}</span></div>
+          <div class="cita-row"><span>Teléfono</span><span>${c[6]}</span></div>
           <div class="cita-row"><span>Barbero</span><span>${c[4]}</span></div>
           <div class="cita-row estado ${estado}">
             <span>Estado</span><span>${estado}</span>
           </div>
           <div class="cita-actions">${botonEstado}</div>
         `;
-
         contenedor.appendChild(card);
       });
 
@@ -121,13 +120,8 @@ function cargarCitas() {
 function actualizarBadge(id, total) {
   const badge = document.getElementById(id);
   if (!badge) return;
-
-  if (total > 0) {
-    badge.textContent = total;
-    badge.style.display = "inline-flex";
-  } else {
-    badge.style.display = "none";
-  }
+  badge.textContent = total;
+  badge.style.display = total > 0 ? "inline-flex" : "none";
 }
 
 /* ======================
@@ -140,7 +134,7 @@ function actualizarTitulo() {
 }
 
 /* ======================
-   ACCIONES
+   ACCIONES CITAS
 ====================== */
 function cancelar(id) {
   if (!confirm("¿Cancelar esta cita?")) return;
@@ -157,7 +151,72 @@ function logout() {
   location.href = "login.html";
 }
 
+/* ======================
+   HORARIOS BARBERO
+====================== */
+function toggleHorarios() {
+  const box = document.getElementById("horariosBox");
+  if (!box) return;
+  box.style.display = box.style.display === "none" ? "block" : "none";
+}
 
+/* ===== GUARDAR HORARIOS POR DÍA ===== */
+function guardarHorarioDia() {
+  const dia = document.getElementById("diaSemana").value;
 
+  const horas = Array.from(
+    document.querySelectorAll(".hora-check:checked")
+  ).map(h => h.value);
 
+  if (!dia) return alert("Selecciona un día");
+  if (horas.length === 0) return alert("Selecciona al menos una hora");
 
+  fetch(
+    `${API}?action=guardarHorarios&barbero_id=${session.barbero_id}&dia=${dia}&horas=${encodeURIComponent(horas.join(","))}`
+  )
+    .then(r => r.json())
+    .then(res => {
+      if (res.ok) {
+        alert("✅ Horarios guardados");
+        limpiarCheckboxes();
+      }
+    });
+}
+
+/* ======================
+   CERRAR / ABRIR FECHA ESPECÍFICA
+====================== */
+function cerrarFecha() {
+  const fecha = document.getElementById("fechaCierre").value;
+  if (!fecha) return alert("Selecciona una fecha");
+  if (!confirm("¿Cerrar esta fecha completa?")) return;
+
+  fetch(
+    `${API}?action=cerrarDia&barbero_id=${session.barbero_id}&fecha=${fecha}`
+  )
+    .then(r => r.json())
+    .then(res => {
+      if (res.ok) alert("🚫 Fecha cerrada correctamente");
+    });
+}
+
+function abrirFecha() {
+  const fecha = document.getElementById("fechaCierre").value;
+  if (!fecha) return alert("Selecciona una fecha");
+  if (!confirm("¿Reabrir esta fecha?")) return;
+
+  fetch(
+    `${API}?action=abrirDia&barbero_id=${session.barbero_id}&fecha=${fecha}`
+  )
+    .then(r => r.json())
+    .then(res => {
+      if (res.ok) alert("♻️ Fecha reabierta correctamente");
+    });
+}
+
+/* ======================
+   HELPERS UI
+====================== */
+function limpiarCheckboxes() {
+  document.querySelectorAll(".hora-check").forEach(c => c.checked = false);
+}
