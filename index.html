@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f172a">
-
 </head>
 
 <body>
@@ -17,19 +16,17 @@
   <h1>Reservar cita</h1>
 
   <input id="cliente" placeholder="Nombre">
-  <input id="email" type="phone" placeholder="Teléfono">
+  <input id="email" placeholder="Teléfono">
 
   <input id="fecha" type="date">
 
-  <!-- BARBERO PRIMERO -->
+  <!-- BARBERO -->
   <select id="barbero">
     <option value="">Selecciona barbero</option>
-    <option value="Luis">Luis</option>
-    <option value="Carlos">Carlos</option>
   </select>
 
-  <!-- HORARIO DESPUÉS -->
-  <select id="hora">
+  <!-- HORARIO -->
+  <select id="hora" disabled>
     <option value="">Selecciona horario</option>
   </select>
 
@@ -44,6 +41,9 @@
 <script src="app.js"></script>
 </body>
 </html>
+
+
+
 
 
 
