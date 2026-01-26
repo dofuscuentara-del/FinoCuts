@@ -1,45 +1,107 @@
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Panel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="panel.css">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f172a">
+  <meta charset="UTF-8">
+  <title>Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="stylesheet" href="panel.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
 </head>
 
 <body>
 
 <div class="container card panel">
 
+  <!-- HEADER -->
   <div class="panel-header">
     <h2 id="titulo"></h2>
     <button class="logout-btn" onclick="logout()">Salir</button>
   </div>
 
-<div class="filtros">
-  <button onclick="setFiltro('todas')" class="filtro-btn">
-    Todas
-    <span class="badge" id="countTodas">0</span>
-  </button>
+  <!-- FILTROS -->
+  <div class="filtros">
+    <button onclick="setFiltro('todas')" class="filtro-btn">
+      Todas <span class="badge" id="countTodas">0</span>
+    </button>
 
-  <button onclick="setFiltro('hoy')" class="filtro-btn">
-    Hoy
-    <span class="badge" id="countHoy">0</span>
-  </button>
+    <button onclick="setFiltro('hoy')" class="filtro-btn">
+      Hoy <span class="badge" id="countHoy">0</span>
+    </button>
 
-  <button onclick="setFiltro('mañana')" class="filtro-btn">
-    Mañana
-    <span class="badge" id="countManana">0</span>
-  </button>
-</div>
+    <button onclick="setFiltro('mañana')" class="filtro-btn">
+      Mañana <span class="badge" id="countManana">0</span>
+    </button>
+  </div>
 
+  <!-- PANEL HORARIOS BARBERO -->
+  <div id="horariosPanel" style="display:none; margin-bottom:18px">
 
+    <button class="filtro-btn" onclick="toggleHorarios()">
+      ⏰ Horarios y cierres
+    </button>
 
+    <div id="horariosBox" style="display:none; margin-top:14px">
 
+      <!-- HORARIO FIJO POR DIA -->
+      <h4>Horario fijo por día</h4>
+
+      <select id="diaSemana" class="filtro-btn" style="width:100%">
+        <option value="">Selecciona un día</option>
+        <option value="lunes">Lunes</option>
+        <option value="martes">Martes</option>
+        <option value="miercoles">Miércoles</option>
+        <option value="jueves">Jueves</option>
+        <option value="viernes">Viernes</option>
+        <option value="sabado">Sábado</option>
+        <option value="domingo">Domingo</option>
+      </select>
+
+      <div id="listaHorarios" style="margin-top:12px; display:grid; grid-template-columns:repeat(4,1fr); gap:6px">
+        <label><input type="checkbox" class="hora-check" value="09:00"> 9:00am</label>
+        <label><input type="checkbox" class="hora-check" value="10:00"> 10:00am</label>
+        <label><input type="checkbox" class="hora-check" value="11:00"> 11:00am</label>
+        <label><input type="checkbox" class="hora-check" value="12:00"> 12:00pm</label>
+        <label><input type="checkbox" class="hora-check" value="13:00"> 1:00pm</label>
+        <label><input type="checkbox" class="hora-check" value="14:00"> 2:00pm</label>
+        <label><input type="checkbox" class="hora-check" value="15:00"> 3:00pm</label>
+        <label><input type="checkbox" class="hora-check" value="16:00"> 4:00pm</label>
+        <label><input type="checkbox" class="hora-check" value="17:00"> 5:00pm</label>
+        <label><input type="checkbox" class="hora-check" value="18:00"> 6:00pm</label>
+        <label><input type="checkbox" class="hora-check" value="19:00"> 7:00pm</label>
+        <label><input type="checkbox" class="hora-check" value="20:00"> 8:00pm</label>
+        <label><input type="checkbox" class="hora-check" value="21:00"> 9:00pm</label>
+        <label><input type="checkbox" class="hora-check" value="22:00"> 10:00pm</label>
+      </div>
+
+      <button class="filtro-btn" style="margin-top:12px" onclick="guardarHorarioDia()">
+        💾 Guardar horario del día
+      </button>
+
+      <hr style="margin:16px 0">
+
+      <!-- CIERRE DE FECHAS ESPECIFICAS -->
+      <h4>Cerrar fecha específica</h4>
+
+      <input type="date" id="fechaCierre" style="width:100%; margin-bottom:10px">
+
+      <div style="display:flex; gap:8px">
+        <button class="filtro-btn" style="background:#dc2626" onclick="cerrarFecha()">
+          🚫 Cerrar fecha
+        </button>
+
+        <button class="filtro-btn" onclick="abrirFecha()">
+          ♻️ Reabrir fecha
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LISTA CITAS -->
   <div id="listaCitas" class="citas-list"></div>
 
 </div>
@@ -48,5 +110,6 @@
 
 <script src="panel.js"></script>
 <script src="theme.js"></script>
+
 </body>
 </html>
