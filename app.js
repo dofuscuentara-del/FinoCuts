@@ -4,12 +4,33 @@ let reservando = false;
 
 document.addEventListener("DOMContentLoaded", () => {
 
+  /* ================= TEMA ================= */
+  const btn = document.getElementById("themeToggle");
+  if (btn) {
+    const theme = localStorage.getItem("theme");
+    if (theme === "light") {
+      document.body.classList.add("light");
+      btn.textContent = "🌙";
+    } else {
+      btn.textContent = "☀️";
+    }
+
+    btn.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+      const isLight = document.body.classList.contains("light");
+      localStorage.setItem("theme", isLight ? "light" : "dark");
+      btn.textContent = isLight ? "🌙" : "☀️";
+    });
+  }
+
+  /* ================= ELEMENTOS ================= */
   const fechaInput = document.getElementById("fecha");
   const barberoSelect = document.getElementById("barbero");
   const horaSelect = document.getElementById("hora");
 
   horaSelect.disabled = true;
 
+  /* ================= BARBEROS ================= */
   cargarBarberos();
 
   async function cargarBarberos() {
@@ -20,15 +41,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     data.forEach(b => {
       const opt = document.createElement("option");
-      opt.value = b.id;
+      opt.value = b.id;          // ID REAL (importante)
       opt.textContent = b.nombre;
       barberoSelect.appendChild(opt);
     });
   }
 
+  /* ================= EVENTOS ================= */
   fechaInput.addEventListener("change", cargarHorarios);
   barberoSelect.addEventListener("change", cargarHorarios);
 
+  /* ================= HORARIOS ================= */
   function cargarHorarios() {
     const fecha = fechaInput.value;
     const barbero = barberoSelect.value;
@@ -41,8 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch(`${API}?action=horariosDisponibles&fecha=${fecha}&barbero=${barbero}`)
       .then(r => r.json())
       .then(data => {
+
         if (!Array.isArray(data) || data.length === 0) {
-          horaSelect.innerHTML = '<option>🚫 No hay horarios</option>';
+          horaSelect.innerHTML =
+            '<option value="">🚫 No hay horarios disponibles</option>';
           return;
         }
 
@@ -54,18 +79,25 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         horaSelect.disabled = false;
+      })
+      .catch(err => {
+        console.error("Error horarios:", err);
+        horaSelect.innerHTML =
+          '<option value="">Error al cargar horarios</option>';
       });
   }
 });
 
+/* ================= RESERVAR ================= */
 function reservar() {
   if (reservando) return;
 
-  const cliente = cliente.value.trim();
-  const email = email.value.trim();
-  const fecha = fecha.value;
-  const barbero = barbero.value;
-  const hora = hora.value;
+  const cliente = document.getElementById("cliente").value.trim();
+  const email   = document.getElementById("email").value.trim();
+  const fecha   = document.getElementById("fecha").value;
+  const barbero = document.getElementById("barbero").value;
+  const hora    = document.getElementById("hora").value;
+  const horaSelect = document.getElementById("hora");
 
   if (!cliente || !email || !fecha || !barbero || !hora) {
     alert("Completa todos los campos");
@@ -74,13 +106,36 @@ function reservar() {
 
   reservando = true;
 
-  fetch(
-    `${API}?action=reservar&cliente=${encodeURIComponent(cliente)}&email=${encodeURIComponent(email)}&fecha=${fecha}&barbero=${barbero}&hora=${hora}`
-  )
+  const url = `${API}?action=reservar`
+    + `&cliente=${encodeURIComponent(cliente)}`
+    + `&email=${encodeURIComponent(email)}`
+    + `&fecha=${fecha}`
+    + `&barbero=${barbero}`
+    + `&hora=${hora}`;
+
+  fetch(url)
     .then(r => r.json())
     .then(res => {
       reservando = false;
-      alert(res.ok ? "✅ Cita reservada" : "❌ Error");
+
+      if (res.ok) {
+        alert("✅ Cita reservada correctamente");
+
+        // limpiar horario y bloquear
+        horaSelect.innerHTML =
+          '<option value="">Selecciona horario</option>';
+        horaSelect.disabled = true;
+      } else {
+        alert("❌ Error al reservar");
+      }
+    })
+    .catch(err => {
+      reservando = false;
+      console.error(err);
+      alert("❌ Error de conexión");
     });
 }
+
+
+
 
