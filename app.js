@@ -2,7 +2,59 @@ const API = "https://script.google.com/macros/s/AKfycbwkLfh6ZMyuuyAxSQ9swLPbbpZw
 
 let reservando = false;
 
+/* =========================
+   🔔 PUSH – CONFIG
+========================= */
+
+// 🔑 TU PUBLIC VAPID KEY (LA QUE ME MANDASTE)
+const VAPID_PUBLIC_KEY =
+  "BMNIgV6ByYDtvFwuzJu2KWAqV1mmBpFM4coCzrs6NREnWQQwoAO0zDzOI4jZhBJZi9b9g3kdAljNNxfu4FRYh1Q";
+
+// Convertir clave
+function urlBase64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/-/g, "+")
+    .replace(/_/g, "/");
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+// Suscribirse a push
+async function suscribirsePush() {
+  if (!("serviceWorker" in navigator)) return;
+
+  const reg = await navigator.serviceWorker.ready;
+
+  const sub = await reg.pushManager.getSubscription();
+  if (sub) return; // ya suscrito
+
+  await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+  });
+
+  console.log("✅ Usuario suscrito a notificaciones push");
+}
+
+/* =========================
+   INIT
+========================= */
+
 document.addEventListener("DOMContentLoaded", () => {
+
+  /* 🔔 PEDIR PERMISO PUSH (AGREGADO) */
+  if ("Notification" in window && Notification.permission !== "granted") {
+    Notification.requestPermission().then(p => {
+      if (p === "granted") suscribirsePush();
+    });
+  }
 
   /* ================= TEMA ================= */
   const btn = document.getElementById("themeToggle");
@@ -41,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     data.forEach(b => {
       const opt = document.createElement("option");
-      opt.value = b.id;          // ID REAL (importante)
+      opt.value = b.id;
       opt.textContent = b.nombre;
       barberoSelect.appendChild(opt);
     });
@@ -121,7 +173,6 @@ function reservar() {
       if (res.ok) {
         alert("✅ Cita reservada correctamente");
 
-        // limpiar horario y bloquear
         horaSelect.innerHTML =
           '<option value="">Selecciona horario</option>';
         horaSelect.disabled = true;
@@ -135,23 +186,3 @@ function reservar() {
       alert("❌ Error de conexión");
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
