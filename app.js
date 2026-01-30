@@ -121,6 +121,14 @@ function reservar() {
       if (res.ok) {
         alert("✅ Cita reservada correctamente");
 
+         // limpiar inputs
+  document.getElementById("cliente").value = "";
+  document.getElementById("email").value   = "";
+
+  // limpiar selects
+  document.getElementById("fecha").value   = "";
+  document.getElementById("barbero").value = "";
+
         // limpiar horario y bloquear
         horaSelect.innerHTML =
           '<option value="">Selecciona horario</option>';
@@ -135,6 +143,7 @@ function reservar() {
       alert("❌ Error de conexión");
     });
 }
+
 
 
 
