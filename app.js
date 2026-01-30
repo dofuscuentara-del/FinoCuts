@@ -126,7 +126,7 @@ function reservar() {
           '<option value="">Selecciona horario</option>';
         horaSelect.disabled = true;
       } else {
-        alert("❌ Error al reservar");
+        alert("❌ Hora no Disponible");
       }
     })
     .catch(err => {
@@ -135,6 +135,7 @@ function reservar() {
       alert("❌ Error de conexión");
     });
 }
+
 
 
 
